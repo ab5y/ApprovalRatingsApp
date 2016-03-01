@@ -17,6 +17,8 @@ requires = [
     'transaction',
     'zope.sqlalchemy',
     'waitress',
+    'docutils',
+    'passlib',
     ]
 
 setup(name='ApprovalRatingsApp',

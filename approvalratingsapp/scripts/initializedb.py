@@ -11,11 +11,16 @@ from pyramid.paster import (
 
 from pyramid.scripts.common import parse_vars
 
-from ..models import (
+from ..models.meta import (
     DBSession,
-    MyModel,
     Base,
     )
+
+from ..models import (
+    UserType,
+    RateeType,
+    User,
+    Ratee)
 
 
 def usage(argv):
@@ -36,5 +41,7 @@ def main(argv=sys.argv):
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
     with transaction.manager:
-        model = MyModel(name='one', value=1)
+        model = UserType("admin")
+        DBSession.add(model)
+        model = UserType("rater")
         DBSession.add(model)

@@ -1,0 +1,47 @@
+<html metal:use-macro="load: mytemplate.pt">
+	<div metal:fill-slot="content" class="content">
+		<p>
+			<strong>
+				Register
+			</strong><br>
+			<span tal:replace="message"></span>
+		</p>
+		<form action="${url}" method="post">
+			<input type="hidden" name="came_from" value="${came_from}">
+			<div class="form-group">
+				<select name="user_type">
+					<tal:block tal:repeat="user_type user_types">
+						<option tal:condition="python: int(user_type.id) != int(user_type_id)" 
+                              tal:attributes="value user_type.id"
+                              tal:content="user_type.user_type">
+						</option>
+						<option tal:condition="python: int(user_type.id) == int(user_type_id)"
+                              tal:attributes="value user_type.id"
+                              tal:content="user_type.user_type"
+                              selected>
+						</option>
+					</tal:block>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="name">Name</label>
+				<input type="text" name="name" value="${name}">
+			</div>
+			<div class="form-group">
+				<label for="email">Email</label>
+				<input type="email" name="email" value="${email}">
+			</div>
+			<div class="form-group">
+				<label for="password">Password</label>
+				<input type="password" name="password" value="${password}">
+			</div>
+			<div class="form-group">
+				<label for="confirm_password">Confirm Password</label>
+				<input type="password" name="confirm_password" value="${confirm_password}">
+			</div>
+			<div class="form-group">
+				<button type="submit" name="form.submitted" value="Register" class="btn btn-default">Register</button>
+			</div>
+		</form>
+	</div>
+</html>

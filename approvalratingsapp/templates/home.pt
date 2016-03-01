@@ -1,0 +1,5 @@
+<html metal:use-macro="load: mytemplate.pt">
+	<div metal:fill-slot="content" class="content">
+		YEAH SUCK MY DICK
+	</div>
+</html>
