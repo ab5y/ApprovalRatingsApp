@@ -1,5 +1,65 @@
 <html metal:use-macro="load: mytemplate.pt">
 	<div metal:fill-slot="content" class="content">
 		YEAH SUCK MY DICK
+		<table>
+			<thead>
+				<tr>
+					<th>
+						<strong>Approval Ratings</strong>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<tal:block tal:repeat="ratings_tuple ratings_tuple_list">
+						<td>
+							<div>
+								<div>
+									<strong>
+										<span tal:replace="ratings_tuple[0].name">
+											Ratee Name Goes Here
+										</span>
+									</strong>
+								</div>
+								<div>
+									<tal:block tal:condition="ratings_tuple[1]">
+										Your rating: 
+										<span tal:attributes="value ratings_tuple[1].rating">
+											<a href="">${ratings_tuple[1].rating}</a>
+										</span>
+									</tal:block>
+									<tal:block tal:condition="not ratings_tuple[1]">
+										<form class="user_rating" id="${ratings_tuple[0].id}">
+											<input type="radio" name="${ratings_tuple[0].id}_rating" value="-2"> -2
+											<input type="radio" name="${ratings_tuple[0].id}_rating" value="-1"> -1
+											<input type="radio" name="${ratings_tuple[0].id}_rating" value="0"> 0
+											<input type="radio" name="${ratings_tuple[0].id}_rating" value="1"> +1
+											<input type="radio" name="${ratings_tuple[0].id}_rating" value="2"> +2
+										</form>
+									</tal:block>
+								</div>
+							</div>
+						</td>
+					</tal:block>
+				</tr>
+			</tbody>
+		</table>
+		<script type="text/javascript">
+			$('.user_rating').change(function() {
+				ratee_id = $(this).attr('id');
+				inputName = ratee_id+"_rating";
+				rating = $('input[name='+inputName+']:checked', '#'+ratee_id).val();
+				<!-- alert("Ratee id is: "+ratee_id); -->
+				$.ajax({
+					type:'POST',
+					url:"${request.application_url}/post_rating",
+					data: JSON.stringify({'ratee_id':ratee_id, 'rating':rating}),
+					contentType: 'application/json; charset=utf-8'
+				})
+				.done(function(msg) {
+					
+				});
+			});
+		</script>
 	</div>
 </html>

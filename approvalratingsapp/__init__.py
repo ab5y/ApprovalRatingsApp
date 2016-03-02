@@ -11,6 +11,8 @@ from .models.meta import (
     user_pwd_context
     )
 
+from .models import User
+
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
@@ -36,5 +38,6 @@ def main(global_config, **settings):
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
     config.add_route('register', '/register')
+    config.add_route('post_rating', '/post_rating')
     config.scan()
     return config.make_wsgi_app()

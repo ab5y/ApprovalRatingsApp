@@ -15,4 +15,4 @@ class UserTypeRecordService(object):
 
 	@classmethod
 	def by_user_type(cls, user_type):
-		return DBSession.query(UserType).filter_by(user_type=user_type).all()
+		return DBSession.query(UserType).filter_by(user_type=user_type).first()

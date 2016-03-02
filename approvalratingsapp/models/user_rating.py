@@ -16,9 +16,9 @@ class UserRating(Base):
 	user = relationship("User", back_populates="user_ratings")
 	ratee_id = Column(Integer, ForeignKey('ratee.id'), nullable=False)
 	ratee = relationship("Ratee", back_populates="user_ratings")
-	rating_val = Column(Integer, nullable=False)
+	rating = Column(Integer, nullable=False)
 
-	def __init__(self, user_id, ratee_id, rating_val):
+	def __init__(self, user_id, ratee_id, rating):
 		self.user_id = user_id
 		self.ratee_id = ratee_id
-		self.rating_val = rating_val
+		self.rating = rating

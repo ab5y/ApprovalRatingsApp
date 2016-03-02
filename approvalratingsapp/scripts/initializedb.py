@@ -20,7 +20,9 @@ from ..models import (
     UserType,
     RateeType,
     User,
-    Ratee)
+    Ratee,
+    UserRating,
+    )
 
 
 def usage(argv):
@@ -41,7 +43,13 @@ def main(argv=sys.argv):
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
     with transaction.manager:
-        model = UserType("admin")
-        DBSession.add(model)
-        model = UserType("rater")
-        DBSession.add(model)
+        adminUserType = UserType("admin")
+        DBSession.add(adminUserType)
+        adminUserType = DBSession.query(UserType).filter_by(user_type="admin").first()
+        rateeType = RateeType("celebrity")
+        DBSession.add(rateeType)
+        rateeType = DBSession.query(RateeType).filter_by(ratee_type="celebrity").first()
+        ratee = Ratee("Narendra Modi", rateeType.id)
+        DBSession.add(ratee)
+        raterUserType = UserType("rater")
+        DBSession.add(raterUserType)
