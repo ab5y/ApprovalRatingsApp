@@ -1,5 +1,5 @@
 alabaster==0.7.7
--e git+https://github.com/ab5y/ApprovalRatingsApp.git@9ffee33a740248eaf37293fa7aac6bc349dc6026#egg=ApprovalRatingsApp
+-e git+https://github.com/ab5y/ApprovalRatingsApp.git@08f1b326b30f1681aab9ebb09eb8751484cc064c#egg=ApprovalRatingsApp
 -e git+https://github.com/ab5y/artcon.git@fad6c41560ce7d8b201675e00c89a570b125b867#egg=artcon_z&subdirectory=artcon_z
 awsebcli==3.7.3
 Babel==2.2.0
