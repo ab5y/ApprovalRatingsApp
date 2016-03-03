@@ -22,6 +22,9 @@
 									</strong>
 								</div>
 								<div>
+									
+								</div>
+								<div>
 									<tal:block tal:condition="ratings_tuple[1]">
 										Your rating: 
 										<span tal:attributes="value ratings_tuple[1].rating">
