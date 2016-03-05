@@ -12,7 +12,7 @@ from .models.meta import (
     )
 
 from .models import User
-
+# from security import user_access_finder
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
@@ -25,7 +25,7 @@ def main(global_config, **settings):
     filepath = os.path.abspath(os.path.join(basepath, "..", "development.ini"))
     user_pwd_context.load_path(filepath)
 
-    authn_policy = AuthTktAuthenticationPolicy('tilop', hashalg='sha512')
+    authn_policy = AuthTktAuthenticationPolicy('tilop', hashalg='sha512') #callback=user_access_finder, 
     authz_policy = ACLAuthorizationPolicy()
 
     config = Configurator(settings=settings,
@@ -39,5 +39,6 @@ def main(global_config, **settings):
     config.add_route('logout', '/logout')
     config.add_route('register', '/register')
     config.add_route('post_rating', '/post_rating')
+    config.add_route('create_ratee', '/create_ratee', factory='approvalratingsapp.security.UserFactory')
     config.scan()
     return config.make_wsgi_app()

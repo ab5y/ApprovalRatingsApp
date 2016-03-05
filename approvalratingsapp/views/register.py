@@ -25,7 +25,7 @@ def register(request):
 		password = request.params['password']
 		confirm_password = request.params['confirm_password']
 		name = request.params['name']
-		user_type_id = (UserTypeRecordService.by_user_type('rater')).id
+		user_type_id = request.params['user_type'] # (UserTypeRecordService.by_user_type('rater')).id
 		if email and password and name:
 			if password == confirm_password:
 				users = UserRecordService.by_email(email)

@@ -1,0 +1,45 @@
+<html metal:use-macro="load: mytemplate.pt">
+	<div metal:fill-slot="content" class="content">
+		<div class="page-header">
+			<h1>Create Poll 
+				<!-- <small>Subtext for header</small> -->
+			</h1>
+		</div>
+		<form>
+			<ol>
+				<li>
+					<div class="input-group">
+						<span class="input-group-addon" id="title">Title</span>
+						<input type="text" class="form-control" placeholder="What do you want to poll?" aria-describedby="title">
+					</div>
+				</li>
+				<li>
+					<div class="input-group">
+						<span class="input-group-addon" id="type">Type</span>
+						<button type="button" class="btn btn-default dropdown-toggle selected-type" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Select
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu">
+							<tal:block tal:repeat="ratee_type ratee_types">
+								<li><a href="#" value="${ratee_type.id}" onclick="selectType(event)">${ratee_type.ratee_type}</a></li>
+							</tal:block>
+							<li role="separator" class="divider"></li>
+							<li><a href="#" onclick="createType(event)">Create new type</a></li>
+						</ul>
+					</div>
+				</li>
+			</ol>
+		</form>
+		<script type="text/javascript">
+		function selectType(e) {
+			$('.selected-type').text($(e.target).text());
+			$('.selected-type').val($(e.target).val())
+		}
+
+		function createType(e) {
+			$('.selected-type').text($(e.target).text());
+		}
+		</script>
+	</div>
+</html>

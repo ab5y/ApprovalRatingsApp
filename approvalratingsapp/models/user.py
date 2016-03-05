@@ -11,6 +11,7 @@ from sqlalchemy import (
 	UnicodeText,
 	DateTime,
 	)
+from approvalratingsapp.models.services.user_type_record import UserTypeRecordService
 
 class User(Base):
 	__tablename__ = 'user'
@@ -44,4 +45,8 @@ class User(Base):
 
 	@property
 	def __acl__(self):
-		return [(Allow, self.id, 'edit')]
+		usr_typ = UserTypeRecordService.by_id(self.user_type_id)
+		print "USER __ACL__ ENTERED. RETURNED: ", self.id, "TYPE: ", usr_typ.user_type
+		if str(usr_typ.user_type) == 'admin':
+			return [(Allow, 'admin', str(usr_typ.user_type))]
+		return [(Allow, self.id, str(usr_typ.user_type))]
