@@ -48,7 +48,6 @@ def homepost(request):
 			user_rating.rating = rating
 		else:
 			user_rating = UserRating(user_id, ratee_id, rating)
-		print "SHIT LOOKS LIKE THIS BITCH: ", user_rating.rating
 		UserRatingRecordService.commit(user_rating)
-		print "LOOK AT WHAT I GET IN THE MAIL ", request.json_body
+		return UserRatingRecordService.cumulative_ratee_rating(ratee_id)
 	return 'OK'
