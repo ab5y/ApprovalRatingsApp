@@ -7,7 +7,7 @@
     <meta name="description" content="pyramid web application">
     <meta name="author" content="Pylons Project">
     <link rel="shortcut icon" href="${request.static_url('approvalratingsapp:static/pyramid-16x16.png')}">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <title>Aprvl</title>
 
     <!-- Bootstrap core CSS -->
@@ -27,7 +27,7 @@
   </head>
   <body>
     <nav class="navbar navbar-default">
-      <div class="container-fluid">
+      <div class="container-fluid starter-template">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -36,7 +36,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Aprvl</a>
+          <a class="navbar-brand" href="${request.application_url}">Aprvl</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -64,14 +64,10 @@
             <button type="submit" class="btn btn-default">Submit</button>
           </form> -->
           <ul class="nav navbar-nav navbar-right">
-            <tal:block tal:condition="not:logged_in">
-              <li><a href="${request.application_url}/login">Login</a></li>
-              <li><a href="${request.application_url}/register">Register</a><li>
-            </tal:block>
-            <tal:block tal:condition="not:logged_in">
-              <li><a href="${request.application_url}">Home</a></li>
-              <li><a href="${request.application_url}/logout">Logout</a></li>
-            </tal:block>
+            <li tal:condition="not:logged_in"><a href="${request.application_url}/login">Login</a></li>
+            <li tal:condition="not:logged_in"><a tal:condition="not:logged_in" href="${request.application_url}/register">Register</a><li>
+            <li tal:condition="logged_in"><a href="${request.application_url}">Home</a></li>
+            <li tal:condition="logged_in"><a href="${request.application_url}/logout">Logout</a></li>
             <!-- <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
               <ul class="dropdown-menu">
@@ -128,7 +124,6 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="//oss.maxcdn.com/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
   </body>
 </html>

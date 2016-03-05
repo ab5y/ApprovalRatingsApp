@@ -29,7 +29,8 @@ def home(request):
 	ratings_tuple_list = []
 	for ratee in ratees:
 		user_rating = UserRatingRecordService.by_user_id_and_ratee_id(user_id, ratee.id)
-		ratings_tuple_list.append((ratee, user_rating))
+		cumulative_rating = UserRatingRecordService.cumulative_ratee_rating(ratee.id)
+		ratings_tuple_list.append((ratee, user_rating, cumulative_rating))
 	return dict(
 		ratings_tuple_list=ratings_tuple_list,
 		logged_in=request.authenticated_userid,
