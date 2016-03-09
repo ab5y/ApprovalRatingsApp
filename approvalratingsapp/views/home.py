@@ -2,6 +2,7 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
 from pyramid.security import authenticated_userid
 
+from ..models.services.user_record import UserRecordService
 from ..models.services.user_type_record import UserTypeRecordService
 from ..models.services.ratee_record import RateeRecordService
 from ..models.services.user_rating_record import UserRatingRecordService
@@ -15,7 +16,6 @@ def home(request):
 		return HTTPFound(location=request.route_url('login'))
 	ratees = RateeRecordService.all()
 	user_id = int(authenticated_userid(request))
-	# user_ratings = UserRatingRecordService.by_user_id(authenticated_userid(request))
 	ratings_tuple_list = []
 	for ratee in ratees:
 		user_rating = UserRatingRecordService.by_user_id_and_ratee_id(user_id, ratee.id)
@@ -24,6 +24,7 @@ def home(request):
 	return dict(
 		ratings_tuple_list=ratings_tuple_list,
 		logged_in=request.authenticated_userid,
+		user_name=request.session['username'],
 		)
 
 @view_config(route_name='post_rating', renderer='string')
