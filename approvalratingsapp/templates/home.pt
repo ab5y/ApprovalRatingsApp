@@ -2,28 +2,28 @@
 	<div metal:fill-slot="content" class="content">
 		<tal:block tal:repeat="ratings_tuple ratings_tuple_list">
 			<div class="list-group">
-				<a href="#" class="list-group-item active">
+				<a class="list-group-item active">
 					<h4 class="list-group-item-heading" tal:replace="ratings_tuple[0].name">List group item heading</h4>
 				</a>
 				<div class="panel panel-default">
 					<tal:block tal:condition="ratings_tuple[1]">
-						<div class="progress">
-							<div class="progress-bar" role="progressbar" aria-valuenow="${ratings_tuple[2]}" aria-valuemin="0" aria-valuemax="100" style="width: ${ratings_tuple[2]}%;">
+						<div class="progress" name="${ratings_tuple[0].id}_progress_div">
+							<div class="progress-bar" role="progressbar" aria-valuenow="${ratings_tuple[2]}" aria-valuemin="0" aria-valuemax="100" style="width: ${ratings_tuple[2]}%;" name="${ratings_tuple[0].id}_progress_bar">
 								${ratings_tuple[2]}
 							</div>
 						</div>
 					</tal:block>
 
 					<tal:block tal:condition="not ratings_tuple[1]">
-						<div class="progress hide">
-							<div class="progress-bar" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100">
+						<div class="progress hide" name="${ratings_tuple[0].id}_progress_div">
+							<div class="progress-bar" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" name="${ratings_tuple[0].id}_progress_bar">
 							</div>
 						</div>
 					</tal:block>
 
 					<!-- If user has not rated this before -->
 					<tal:block tal:condition="not ratings_tuple[1]">
-						<div class="panel-body" name="edit_rating_panel">
+						<div class="panel-body" name="${ratings_tuple[0].id}_edit_rating_panel">
 							<div class="btn-group" role="group" aria-label="" id="${ratings_tuple[0].id}">
 								<button type="button" class="btn btn-default user_rating" name="${ratings_tuple[0].id}_rating" value="-2">-2</button>
 								<button type="button" class="btn btn-default user_rating" name="${ratings_tuple[0].id}_rating" value="-1">-1</button>
@@ -32,17 +32,17 @@
 								<button type="button" class="btn btn-default user_rating" name="${ratings_tuple[0].id}_rating" value="2">2</button>
 							</div>
 						</div>
-						<div class="panel-body hide" name="display_rating_panel">
+						<div class="panel-body hide" name="${ratings_tuple[0].id}_display_rating_panel">
 							Your rating:
 							<span>
-								<a href="#" onclick="change_rating()" name="user_rating_val"></a>
+								<a href="#" onclick="change_rating('${ratings_tuple[0].id}_edit_rating_panel')" name="${ratings_tuple[0].id}_user_rating_val"></a>
 							</span>
 						</div>
 					</tal:block>
 
 					<!-- If user has rated this before -->
 					<tal:block tal:condition="ratings_tuple[1]">
-						<div class="panel-body hide" name="edit_rating_panel">
+						<div class="panel-body hide" name="${ratings_tuple[0].id}_edit_rating_panel">
 							<div class="btn-group" role="group" aria-label="" id="${ratings_tuple[0].id}">
 								<button type="button" class="btn btn-default user_rating" name="${ratings_tuple[0].id}_rating" value="-2">-2</button>
 								<button type="button" class="btn btn-default user_rating" name="${ratings_tuple[0].id}_rating" value="-1">-1</button>
@@ -51,10 +51,10 @@
 								<button type="button" class="btn btn-default user_rating" name="${ratings_tuple[0].id}_rating" value="2">2</button>
 							</div>
 						</div>
-						<div class="panel-body">
+						<div class="panel-body" name="${ratings_tuple[0].id}_display_rating_panel">
 							Your rating:
 							<span tal:attributes="value ratings_tuple[1].rating">
-								<a href="#" onclick="change_rating()" name="user_rating_val">${ratings_tuple[1].rating}</a>
+								<a href="#" onclick="change_rating('${ratings_tuple[0].id}_edit_rating_panel')" name="${ratings_tuple[0].id}_user_rating_val">${ratings_tuple[1].rating}</a>
 							</span>
 						</div>
 					</tal:block>
@@ -62,9 +62,9 @@
 			</div>
 		</tal:block>
 		<script type="text/javascript">
-			$('.user_rating').click(function() {
-				ratee_id = $(this).closest("div").attr("id");
-				rating = $(this).val();
+			$('.user_rating').click(function(e) {
+				ratee_id = $(e.target).closest("div").attr("id");
+				rating = $(e.target).val();
 				<!-- alert("Ratee id is: "+ratee_id); -->
 				$.ajax({
 					type:'POST',
@@ -73,20 +73,19 @@
 					contentType: 'application/json; charset=utf-8'
 				})
 				.done(function(msg) {
-					$('div[name=edit_rating_panel]').addClass("hide");
-					$('div[name=display_rating_panel]').removeClass("hide");
-					$('a[name=user_rating_val]').text(rating);
+					$('div[name='+ratee_id+'_edit_rating_panel]').addClass("hide");
+					$('div[name='+ratee_id+'_display_rating_panel]').removeClass("hide");
+					$('a[name='+ratee_id+'_user_rating_val]').text(rating);
 					var total = parseInt(msg, 10);
-					$('.progress-bar').css('width', total+'%')
+					$('div[name='+ratee_id+'_progress_bar]').css('width', total+'%')
 									  .attr('aria-valuenow', total)
 									  .text(total);
-					$('.progress').removeClass("hide");
+					$('div[name='+ratee_id+'_progress_div]').removeClass("hide");
 				});
 			});
 
-			function change_rating() {
-				<!-- alert("Yo!"); -->
-				$('div[name=edit_rating_panel]').toggleClass("hide");
+			function change_rating(panel_name) {
+				$('div[name='+panel_name+']').toggleClass("hide");
 			}
 		</script>
 	</div>

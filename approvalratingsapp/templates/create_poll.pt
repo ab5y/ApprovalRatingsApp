@@ -1,0 +1,68 @@
+<html metal:use-macro="load: mytemplate.pt">
+	<div metal:fill-slot="content" class="content">
+		<div class="page-header">
+			<h1>Create Poll 
+				<!-- <small>Subtext for header</small> -->
+			</h1>
+		</div>
+		<form class="col-xs-8">
+			<ol>
+				<li>
+					<div class="input-group">
+						<span class="input-group-addon" id="title">Title</span>
+						<input type="text" class="form-control" placeholder="What do you want to poll?" aria-describedby="title" name="title">
+					</div>
+				</li>
+				<li>
+					<div class="input-group">
+						<span class="input-group-addon" id="type">Type</span>
+						<input type="text" class="form-control" placeholder="What is the poll about?" aria-describedby="type" name="type">
+					</div>
+				</li>
+				<li>
+					<div class="input-group">
+						<span class="input-group-addon" id="duration">Duration</span>
+						<select class="form-control" placeholder="What does polling stop?" aria-describedby="duration" name="duration">
+							<tal:block tal:repeat="duration durations">
+								<option selected="false" value="${duration.time}">${duration.text}</option>
+							</tal:block>
+						</select>
+					</div>
+				</li>
+			</ol>
+			<div>
+				<input type='button' onclick="create()" class="btn btn-default" value="Create">
+			</div>
+		</form>
+		<script type="text/javascript">
+		function create() {
+			var title = $('input[name=title]').val();
+			var type = $('input[name=type]').val();
+			var duration = $('select[name=duration]').find(":selected").val();
+			return $.ajax({
+					type:'POST',
+					url:"${request.application_url}/post_ratee",
+					data: JSON.stringify({
+											'title':title,
+											'type':type,
+											'duration':duration
+										}),
+					contentType: 'application/json; charset=utf-8'
+				})
+				.done(function(msg){
+					<!-- alert(msg); -->
+					window.location = msg;
+				});
+		}
+		
+		$(function() {
+			var availableTypes = [<tal:block tal:repeat="ratee_type ratee_types">"${ratee_type.ratee_type}",</tal:block>];
+			$( "input[name=type]" ).autocomplete({
+				source: availableTypes
+			});
+
+			var availableDurations = [];
+		});
+		</script>
+	</div>
+</html>

@@ -40,6 +40,9 @@ def login(request):
 		if user:
 			if user.validate_password(password):
 				headers = remember(request, user.id)
+				session = request.session
+				session['username'] = user.name
+				session.save()
 				return HTTPFound(location=came_from, headers=headers)
 			message = 'Failed login. Incorrect password.'
 		else: message = 'Failed login. Incorrect username or password.'
