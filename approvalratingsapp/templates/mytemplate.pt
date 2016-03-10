@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="pyramid web application">
     <meta name="author" content="Pylons Project">
-    <link rel="shortcut icon" href="${request.static_url('approvalratingsapp:static/pyramid-16x16.png')}">
+    <!-- <link rel="shortcut icon" href="${request.static_url('approvalratingsapp:static/pyramid-16x16.png')}"> -->
+    <link rel="stylesheet" href="${request.static_url('approvalratingsapp:static/style.css')}">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
