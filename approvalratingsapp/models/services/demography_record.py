@@ -19,11 +19,11 @@ class DemographyRecordService(object):
 
 	@classmethod
 	def by_name(cls, name):
-		return DBSession.query(Demography).filter_by(name=name).first()
+		return DBSession.query(Demography).filter_by(demography_name=name).first()
 
 	@classmethod
 	def get_id_by_name(cls, name):
-		return DBSession.query(Demography).filter_by(name=name).first().id
+		return DBSession.query(Demography).filter_by(demography_name=name).first().id
 
 	@classmethod
 	def create(cls, demography_obj):
