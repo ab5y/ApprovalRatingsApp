@@ -46,10 +46,8 @@
 						<div class="col-md-3">
 							<div class="input-group">
 								<span class="input-group-addon" id="degree">Degree</span>
-								<select class="form-control" aria-describedby="degree" name="degree">
-									<tal:block tal:repeat="degree degrees">
-										<option value="${degree.id}">${degree.demography_name}</option>
-									</tal:block>
+								<select class="form-control" aria-describedby="degree" name="degree" id="degreeSelect">
+									
 								</select>
 							</div>
 						</div>
@@ -62,10 +60,8 @@
 						<div class="col-md-3">
 							<div class="input-group">
 								<span class="input-group-addon" id="certificate">Certificate</span>
-								<select class="form-control" aria-describedby="certificate" name="certificate">
-									<tal:block tal:repeat="certificate certificates">
-										<option value="${certificate.id}">${certificate.demography_name}</option>
-									</tal:block>
+								<select class="form-control" aria-describedby="certificate" name="certificate" id="certificateSelect">
+									
 								</select>
 							</div>
 						</div>
@@ -76,14 +72,10 @@
 					</div> <!-- end certificateTab div -->
 					<div class="row tab-pane fade" id="classesTab">
 						<div class="col-md-3">
-							<div class="input-group">
-								<span class="input-group-addon" id="classes">classes</span>
-								<select class="form-control" aria-describedby="classes" name="classes">
-									<tal:block tal:repeat="class1 classes">
-										<option value="${class1.id}">${class1.demography_name}</option>
-									</tal:block>
-								</select>
-							</div>
+							<!-- <div class="input-group"> -->
+								<!-- <span class="input-group-addon" id="classes">classes</span> -->
+								<div class="checkbox" id="classesCheck"></div>
+							<!-- </div> -->
 						</div>
 						<div class="col-md-1" role="group" aria-label="...">
 							<button type="button" class="btn btn-primary btn-block" id="backClasses">Back</button>
@@ -106,7 +98,6 @@
 						contentType: 'application/json; charset=utf-8'
 					})
 					.done(function(msg){
-						alert(msg);
 						var $el = $('#yearSelect');
 						$el.empty(); // Remove old options
 						var data =  jQuery.parseJSON(String(msg));
@@ -123,18 +114,71 @@
 					$('#yearTab').addClass('in active');
 				});
 				$('#nextYear').click(function(e) {
+					$.ajax({
+						type:'POST',
+						url:'${request.application_url}/post_demo',
+						data: JSON.stringify({
+							'selected_id':$('select[name=year]').find(":selected").val()
+						}),
+						contentType: 'application/json; charset=utf-8'
+					})
+					.done(function(msg){
+						var $el = $('#degreeSelect');
+						$el.empty(); // Remove old options
+						var data =  jQuery.parseJSON(String(msg));
+						console.log("No errors so far!");
+						$.each(data, function(key, value) {
+							$el.append($("<option></option>").attr("value", value).text(key));
+						});
+					});
 					$('#yearBar').removeClass('active');
 					$('#yearTab').removeClass('in active');
 					$('#degreeBar').removeClass('hide').addClass('active');
 					$('#degreeTab').addClass('in active');
 				});
 				$('#nextDegree').click(function(e) {
+					$.ajax({
+						type:'POST',
+						url:'${request.application_url}/post_demo',
+						data: JSON.stringify({
+							'selected_id':$('select[name=degree]').find(":selected").val()
+						}),
+						contentType: 'application/json; charset=utf-8'
+					})
+					.done(function(msg){
+						var $el = $('#certificateSelect');
+						$el.empty(); // Remove old options
+						var data =  jQuery.parseJSON(String(msg));
+						console.log("No errors so far!");
+						$.each(data, function(key, value) {
+							$el.append($("<option></option>").attr("value", value).text(key));
+						});
+					});
 					$('#degreeBar').removeClass('active');
 					$('#degreeTab').removeClass('in active');
 					$('#certificateBar').removeClass('hide').addClass('active');
 					$('#certificateTab').addClass('in active');
 				});
 				$('#nextCertificate').click(function(e) {
+					$.ajax({
+						type:'POST',
+						url:'${request.application_url}/post_demo',
+						data: JSON.stringify({
+							'selected_id':$('select[name=certificate]').find(":selected").val()
+						}),
+						contentType: 'application/json; charset=utf-8'
+					})
+					.done(function(msg){
+						// var $el = $('#certificateSelect');
+						// $el.empty(); // Remove old options
+						alert(msg);
+						var data =  jQuery.parseJSON(String(msg));
+						console.log("No errors so far!");
+						CreateCheckBoxList(data);
+						// $.each(data, function(key, value) {
+						// 	$el.append($("<option></option>").attr("value", value).text(key));
+						// });
+					});
 					$('#certificateBar').removeClass('active');
 					$('#certificateTab').removeClass('in active');
 					$('#classesBar').removeClass('hide').addClass('active');
@@ -174,6 +218,24 @@
 					$('#classesTab').removeClass('in active');
 				});
 			});
+			
+			function CreateCheckBoxList(checkboxlistItems) {
+				// var table = $('<table></table>');
+				// .append($('<tr></tr>').append($('<td></td>')
+				var table = $('<div class="btn-group" data-toggle="buttons">');
+				var counter = 0;
+				$.each(checkboxlistItems, function(key, value) {
+				// $(checkboxlistItems).each(function () {
+					table.append($('<tr></tr>').append($('<td></td>').append($('<input>').attr({
+						type: 'checkbox', name: 'chklistitem', value: value, id: 'chklistitem' + counter
+					})).append(
+						$('<label>').attr({
+							for: 'chklistitem' + counter++
+					}).text(key))));
+				});
+
+				$('#classesCheck').append(table);
+			}
 		</script>
 	</div>
 </html>

@@ -26,7 +26,6 @@ def edit_demography(request):
 		logged_in=request.authenticated_userid,
 		user_name=request.session['username'],
 		schools=schools,
-		degrees=degrees,
 		certificates=None,
 		classes=classes,
 		optionalsubjects=optionalsubjects,
