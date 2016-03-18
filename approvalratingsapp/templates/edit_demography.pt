@@ -171,7 +171,6 @@
 					.done(function(msg){
 						// var $el = $('#certificateSelect');
 						// $el.empty(); // Remove old options
-						alert(msg);
 						var data =  jQuery.parseJSON(String(msg));
 						console.log("No errors so far!");
 						CreateCheckBoxList(data);
