@@ -1,0 +1,112 @@
+<html metal:use-macro="load: mytemplate.pt">
+	<div metal:fill-slot="content" class="content">
+		<div class="page-header">
+			<h1>Edit Demography</h1>
+		</div>
+		<div class="container-fluid">
+			<form>
+				<ul class="nav nav-pills">
+					<li class="active"><a data-toggle="pill" href="#schoolTab">School</a></li>
+					<li class="hide"><a data-toggle="pill" href="#yearTab">Year</a></li>
+					<li class="hide"><a data-toggle="pill" href="#degreeTab">Degree</a></li>
+					<li class="hide"><a data-toggle="pill" href="#certificateTab">Certificate</a></li>
+					<li class="hide"><a data-toggle="pill" href="#classesTab">Classes</a></li>
+				</ul>
+				<div class="tab-content">
+					<div class="row tab-pane fade in active" id="schoolTab">
+						<div class="col-md-3">
+							<div class="input-group">
+								<span class="input-group-addon" id="school">School</span>
+								<select class="form-control" aria-describedby="school" name="school">
+									<tal:block tal:repeat="school schools">
+										<option value="${school.id}">${school.demography_name}</option>
+									</tal:block>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-1" role="group" aria-label="...">
+							<button type="button" class="btn btn-primary btn-block">Next</button>
+						</div> <!-- end btn-group div -->
+					</div> <!-- end schoolTab div -->
+					<div class="row tab-pane fade" id="yearTab">
+						<div class="col-md-3">
+							<div class="input-group">
+								<span class="input-group-addon" id="year">Year</span>
+								<select class="form-control" aria-describedby="year" name="year">
+									<tal:block tal:repeat="year years">
+										<option value="${year.id}">${year.demography_name}</option>
+									</tal:block>
+								</select>
+							</div>
+						</div>
+						<div class="btn-group btn-group-justified" role="group" aria-label="...">
+							<div class="btn-group" role="group">
+								<button type="button" class="btn btn-primary">Back</button>
+							</div>
+							<div class="btn-group" role="group">
+								<button type="button" class="btn btn-primary">Next</button>
+							</div>
+						</div> <!-- end btn-group div -->
+					</div> <!-- end yearTab div -->
+					<div class="row tab-pane fade" id="degreeTab">
+						<div class="col-md-3">
+							<div class="input-group">
+								<span class="input-group-addon" id="degree">Degree</span>
+								<select class="form-control" aria-describedby="degree" name="degree">
+									<tal:block tal:repeat="degree degrees">
+										<option value="${degree.id}">${degree.demography_name}</option>
+									</tal:block>
+								</select>
+							</div>
+						</div>
+						<div class="btn-group btn-group-justified" role="group" aria-label="...">
+							<div class="btn-group" role="group">
+								<button type="button" class="btn btn-primary">Back</button>
+							</div>
+							<div class="btn-group" role="group">
+								<button type="button" class="btn btn-primary">Next</button>
+							</div>
+						</div> <!-- end btn-group div -->
+					</div> <!-- end degreeTab div -->
+					<div class="row tab-pane fade" id="certificateTab">
+						<div class="col-md-3">
+							<div class="input-group">
+								<span class="input-group-addon" id="certificate">Certificate</span>
+								<select class="form-control" aria-describedby="certificate" name="certificate">
+									<tal:block tal:repeat="certificate certificates">
+										<option value="${certificate.id}">${certificate.demography_name}</option>
+									</tal:block>
+								</select>
+							</div>
+						</div>
+						<div class="btn-group btn-group-justified" role="group" aria-label="...">
+							<div class="btn-group" role="group">
+								<button type="button" class="btn btn-primary">Back</button>
+							</div>
+							<div class="btn-group" role="group">
+								<button type="button" class="btn btn-primary">Next</button>
+							</div>
+						</div> <!-- end btn-group div -->
+					</div> <!-- end certificateTab div -->
+					<div class="row tab-pane fade" id="classesTab">
+						<div class="col-md-3">
+							<div class="input-group">
+								<span class="input-group-addon" id="classes">classes</span>
+								<select class="form-control" aria-describedby="certificate" name="certificate">
+									<tal:block tal:repeat="certificate certificates">
+										<option value="${certificate.id}">${certificate.demography_name}</option>
+									</tal:block>
+								</select>
+							</div>
+						</div>
+					</div> <!-- end classesTab div -->
+				</div> <!-- end tab-content div -->
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(function(){
+			
+		});
+	</script>
+</html>

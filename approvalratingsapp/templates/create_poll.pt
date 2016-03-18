@@ -35,34 +35,34 @@
 			</div>
 		</form>
 		<script type="text/javascript">
-		function create() {
-			var title = $('input[name=title]').val();
-			var type = $('input[name=type]').val();
-			var duration = $('select[name=duration]').find(":selected").val();
-			return $.ajax({
-					type:'POST',
-					url:"${request.application_url}/post_ratee",
-					data: JSON.stringify({
-											'title':title,
-											'type':type,
-											'duration':duration
-										}),
-					contentType: 'application/json; charset=utf-8'
-				})
-				.done(function(msg){
-					<!-- alert(msg); -->
-					window.location = msg;
+			function create() {
+				var title = $('input[name=title]').val();
+				var type = $('input[name=type]').val();
+				var duration = $('select[name=duration]').find(":selected").val();
+				return $.ajax({
+						type:'POST',
+						url:"${request.application_url}/post_ratee",
+						data: JSON.stringify({
+												'title':title,
+												'type':type,
+												'duration':duration
+											}),
+						contentType: 'application/json; charset=utf-8'
+					})
+					.done(function(msg){
+						<!-- alert(msg); -->
+						window.location = msg;
+					});
+			}
+			
+			$(function() {
+				var availableTypes = [<tal:block tal:repeat="ratee_type ratee_types">"${ratee_type.ratee_type}",</tal:block>];
+				$( "input[name=type]" ).autocomplete({
+					source: availableTypes
 				});
-		}
-		
-		$(function() {
-			var availableTypes = [<tal:block tal:repeat="ratee_type ratee_types">"${ratee_type.ratee_type}",</tal:block>];
-			$( "input[name=type]" ).autocomplete({
-				source: availableTypes
-			});
 
-			var availableDurations = [];
-		});
+				var availableDurations = [];
+			});
 		</script>
 	</div>
 </html>

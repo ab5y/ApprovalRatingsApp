@@ -60,7 +60,7 @@
                 <li><a href="#">One more separated link</a></li>
               </ul>
             </li> -->
-            <li tal:condition="logged_in"><a>Welcome, ${user_name}</a></li>
+            <li tal:condition="logged_in" style="cursor:default"><a>Welcome, ${user_name}</a></li>
           </ul>
           <!-- <form class="navbar-form navbar-left" role="search">
             <div class="form-group">
@@ -69,6 +69,7 @@
             <button type="submit" class="btn btn-default">Submit</button>
           </form> -->
           <ul class="nav navbar-nav navbar-right">
+            <li tal:condition="logged_in"><a href="${request.application_url}/edit_demography">Edit Demography</a></li>
             <li tal:condition="logged_in"><a href="${request.application_url}/create_ratee">Create Poll</a></li>
             <li tal:condition="not:logged_in"><a href="${request.application_url}/login">Login</a></li>
             <li tal:condition="not:logged_in"><a tal:condition="not:logged_in" href="${request.application_url}/register">Register</a><li>
@@ -88,42 +89,6 @@
       </div><!-- /.container-fluid -->
     </nav>
     <div metal:define-slot="content" class="content"></div>
-    <!-- <div class="starter-template">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-2">
-            <img class="logo img-responsive" src="${request.static_url('approvalratingsapp:static/pyramid.png')}" alt="pyramid web framework">
-          </div>
-          <div class="col-md-10">
-            <div class="pull-right">
-              <tal:block tal:condition="not:logged_in">
-                <p>
-                  <a href="${request.application_url}/login">Login</a>
-                </p>
-                <p>
-                  <a href="${request.application_url}/register">Register</a>
-                </p>
-              </tal:block>
-            </div>
-            <p tal:condition="logged_in" class="pull-right">
-              <a href="${request.application_url}/logout">Logout</a>
-            </p>
-            <div metal:define-slot="content" class="content"></div>
-            <br>
-            <tal:block tal:condition="python: str(request.url) != str(request.application_url+'/')">
-              <p class="pull-left">You can return to the 
-                <a href="${request.application_url}">FrontPage</a>.
-              </p>
-            </tal:block>
-          </div>
-        </div>
-        <div class="row">
-          <div class="copyright">
-            Copyright &copy; Pylons Project
-          </div>
-        </div>
-      </div>
-    </div> -->
 
 
     <!-- Bootstrap core JavaScript

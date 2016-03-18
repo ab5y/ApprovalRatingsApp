@@ -21,14 +21,21 @@ class User(Base):
 	name = Column(Text, nullable=False)
 	email = Column(String(64), unique=True, nullable=False)
 	password = Column(String(300), nullable=False)
-	last_logged = Column(DateTime, default=datetime.datetime.utcnow)
+	last_logged = Column(DateTime)
+	birthday = Column(DateTime)
+	gender = Column(Text)
+	
 	user_type = relationship("UserType", back_populates="users")
 	user_ratings = relationship("UserRating", back_populates="user")
+	user_demography = relationship("UserDemography", back_populates="user")
 
 	def __init__(self, name, email, user_type_id):
 		self.name = name
 		self.email = email
 		self.user_type_id = user_type_id
+
+	def set_last_logged(self, time):
+		self.last_logged = time
 
 	def validate_password(self, password):
 		ok, new_hash = user_pwd_context.verify_and_update(password, self.password)

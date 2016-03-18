@@ -1,4 +1,4 @@
-from approvalratingsapp.models.meta import Base, user_pwd_context, relationship
+from approvalratingsapp.models.meta import Base, relationship
 from sqlalchemy import (
 	Column,
 	String,

@@ -1,3 +1,4 @@
+import datetime
 from pyramid.httpexceptions import (
 	HTTPFound,
 	HTTPForbidden,
@@ -43,6 +44,11 @@ def login(request):
 				session = request.session
 				session['username'] = user.name
 				session.save()
+				last_logged = user.last_logged
+				user.set_last_logged(datetime.datetime.utcnow())
+				UserRecordService.commit(user)
+				if last_logged == None:
+					return HTTPFound(location='edit_demography', headers=headers)
 				return HTTPFound(location=came_from, headers=headers)
 			message = 'Failed login. Incorrect password.'
 		else: message = 'Failed login. Incorrect username or password.'

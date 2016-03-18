@@ -11,7 +11,7 @@ class UserRatingRecordService(object):
 
 	@classmethod
 	def by_id(cls, id):
-		return UserRating.query.get(id)
+		return DBSession.query(UserRating).get(id)
 
 	@classmethod
 	def by_user_id(cls, id):
@@ -41,4 +41,4 @@ class UserRatingRecordService(object):
 
 	@classmethod
 	def commit(cls, user_rating_obj):
-		DBSession.add(user_rating_obj)
+		return DBSession.add(user_rating_obj)

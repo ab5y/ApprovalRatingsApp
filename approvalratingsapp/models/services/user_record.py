@@ -24,3 +24,7 @@ class UserRecordService(object):
 	@classmethod
 	def by_name(cls, name):
 		return DBSession.query(User).filter_by(name=name).first()
+
+	@classmethod
+	def commit(cls, user_obj):
+		return DBSession.add(user_obj)

@@ -1,5 +1,10 @@
-# from ratee_record import RateeRecordService
-# from ratee_type_record import RateeTypeRecordService
-# from user_rating_record import UserRatingRecordService
-# from user_record import UserRecordService
-# from user_type_record import UserTypeRecordService
+__all__ = ['ratee_record', 
+			'ratee_type_record',
+			'user_rating_record',
+			'user_record',
+			'user_type_record',
+			'demography_record',
+			'demography_type_record',
+			'user_demography_record',
+			'demography_mapping',
+		]

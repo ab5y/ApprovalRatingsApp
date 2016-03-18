@@ -20,14 +20,15 @@ from datetime import datetime, timedelta
 
 @view_config(route_name='create_ratee', renderer='approvalratingsapp:templates/create_poll.pt')
 def create_ratee(request):	
-	if request.method == 'POST': print 'COMES HERE INSTEAD MOTHERFUCKER'
 	ratee_types = RateeTypeRecordService.all()
+	
 	class Duration(object):
 		"""docstring for Durations"""
 		def __init__(self, time, text):
 			super(Duration, self).__init__()
 			self.time = time
 			self.text = text
+	
 	durations = [Duration(datetime.now() + timedelta(hours=24), "1 Day"),
 				Duration(datetime.now() + timedelta(hours=48), "2 Days"),
 				Duration(datetime.now() + timedelta(hours=72), "3 Days"),
@@ -35,10 +36,12 @@ def create_ratee(request):
 				Duration(datetime.now() + timedelta(hours=120), "5 Days"),
 				Duration(datetime.now() + timedelta(hours=144), "6 Days"),
 				Duration(datetime.now() + timedelta(hours=168), "7 Days"),]
-			
+	
+	print "REQUEST.SESSION: ", request.session	
 	return dict(
 		url=request.application_url+'/create_ratee',
 		logged_in=request.authenticated_userid,
+		user_name=request.session['username'],
 		ratee_types=ratee_types,
 		durations=durations,
 		)
