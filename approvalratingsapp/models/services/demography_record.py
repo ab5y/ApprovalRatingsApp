@@ -26,5 +26,9 @@ class DemographyRecordService(object):
 		return DBSession.query(Demography).filter_by(demography_name=name).first().id
 
 	@classmethod
+	def get_type_id_by_id(cls, id):
+		return cls.by_id(id).demography_type_id
+
+	@classmethod
 	def create(cls, demography_obj):
 		return DBSession.add(demography_obj)

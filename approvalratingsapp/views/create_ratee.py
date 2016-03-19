@@ -72,5 +72,4 @@ def post_ratee(request):
 		if result:
 			print 'comes here'
 			return request.application_url
-			# return HTTPFound(location='/')
 	return 'OK'

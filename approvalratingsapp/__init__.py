@@ -44,5 +44,6 @@ def main(global_config, **settings):
     config.add_route('post_ratee', '/post_ratee')
     config.add_route('edit_demography', '/edit_demography')
     config.add_route('post_demo', '/post_demo')
+    config.add_route('submit_demo', '/submit_demo')
     config.scan()
     return config.make_wsgi_app()

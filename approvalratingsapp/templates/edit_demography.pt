@@ -55,7 +55,7 @@
 						<div class="col-md-1" role="group" aria-label="...">
 							<button type="button" class="btn btn-primary btn-block" id="backDegree">Back</button>
 							<button type="button" class="btn btn-primary btn-block next hide" id="nextDegree">Next</button>
-							<button type="button" class="btn btn-success btn-block hide" id="successDegree">Success</button>
+							<button type="button" class="btn btn-success btn-block hide" id="submitDegree">Submit</button>
 						</div> <!-- end btn-group div -->
 					</div> <!-- end degreeTab div -->
 					<div class="row tab-pane fade" id="certificateTab">
@@ -81,7 +81,7 @@
 						</div>
 						<div class="col-md-1" role="group" aria-label="...">
 							<button type="button" class="btn btn-primary btn-block" id="backClasses">Back</button>
-							<button type="button" class="btn btn-success btn-block hide" id="successClasses">Success</button>
+							<button type="button" class="btn btn-success btn-block hide" id="submitClasses">Submit</button>
 						</div>
 					</div> <!-- end classesTab div -->
 				</div> <!-- end tab-content div -->
@@ -97,6 +97,8 @@
 					var selectedVal = $(this).find(":selected").val();
 					var $el = nextSelect; //$(this).next();// $('#yearSelect');
 					$el.empty(); // Remove old options
+					// Hide Submit button after every change in option
+					$('#submitDegree').addClass('hide');
 					if(selectedVal != "Select") {
 						$.ajax({
 							type:'POST',
@@ -112,7 +114,7 @@
 								$('#nextDegree').addClass('hide');
 								$('#certificateBar').addClass('hide');
 								$('#classesBar').addClass('hide');
-								$('#successDegree').removeClass('hide');
+								$('#submitDegree').removeClass('hide');
 							} else {
 								var data =  jQuery.parseJSON(String(msg));
 								console.log("No errors so far!");
@@ -204,6 +206,25 @@
 					$('#classesBar').removeClass('active');
 					$('#classesTab').removeClass('in active');
 				});
+
+				$('#submitDegree').click(function(e) {
+					var school = $('select[name=school]').find(":selected").val();
+					var year = $('select[name=year]').find(":selected").val();
+					var degree = $('select[name=degree]').find(":selected").val();
+					$.ajax({
+							type:'POST',
+							url:'${request.application_url}/submit_demo',
+							data: JSON.stringify({
+								'school':school,
+								'year':year,
+								'degree':degree
+							}),
+							contentType: 'application/json; charset=utf-8'
+					}).done(function(msg) {
+						console.log(msg);
+						window.location = msg;
+					});
+				});
 			});
 			
 			function CreateCheckBoxList(checkboxlistItems) {
@@ -222,6 +243,25 @@
 				});
 
 				$('#classesCheck').append(table);
+			}
+
+			function submitDegree(){
+				var school = $('select[name=school]').find(":selected").val();
+				var year = $('select[name=year]').find(":selected").val();
+				var degree = $('select[name=degree]').find(":selected").val();
+				$.ajax({
+						type:'POST',
+						url:'${request.application_url}/submit_demo',
+						data: JSON.stringify({
+							'school':school,
+							'year':year,
+							'degree':degree
+						}),
+						contentType: 'application/json; charset=utf-8'
+				}).done(function(msg) {
+					console.log(msg);
+					window.location = msg;
+				});
 			}
 		</script>
 	</div>
