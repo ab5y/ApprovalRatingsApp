@@ -17,7 +17,8 @@
 						<div class="col-md-3">
 							<div class="input-group">
 								<span class="input-group-addon" id="school">School</span>
-								<select class="form-control" aria-describedby="school" name="school">
+								<select class="form-control" aria-describedby="school" name="school" id="schoolSelect">
+									<option>Select</option>
 									<tal:block tal:repeat="school schools">
 										<option value="${school.id}">${school.demography_name}</option>
 									</tal:block>
@@ -25,7 +26,7 @@
 							</div>
 						</div>
 						<div class="col-md-1" role="group" aria-label="...">
-							<button type="button" class="btn btn-primary btn-block" id="nextSchool">Next</button>
+							<button type="button" class="btn btn-primary btn-block next hide" id="nextSchool">Next</button>
 						</div> <!-- end btn-group div -->
 					</div> <!-- end schoolTab div -->
 					<div class="row tab-pane fade" id="yearTab">
@@ -39,7 +40,7 @@
 						</div>
 						<div class="col-md-1" role="group" aria-label="...">
 							<button type="button" class="btn btn-primary btn-block" id="backYear">Back</button>
-							<button type="button" class="btn btn-primary btn-block" id="nextYear">Next</button>
+							<button type="button" class="btn btn-primary btn-block next hide" id="nextYear">Next</button>
 						</div> <!-- end btn-group div -->
 					</div> <!-- end yearTab div -->
 					<div class="row tab-pane fade" id="degreeTab">
@@ -53,7 +54,8 @@
 						</div>
 						<div class="col-md-1" role="group" aria-label="...">
 							<button type="button" class="btn btn-primary btn-block" id="backDegree">Back</button>
-							<button type="button" class="btn btn-primary btn-block" id="nextDegree">Next</button>
+							<button type="button" class="btn btn-primary btn-block next hide" id="nextDegree">Next</button>
+							<button type="button" class="btn btn-success btn-block hide" id="successDegree">Success</button>
 						</div> <!-- end btn-group div -->
 					</div> <!-- end degreeTab div -->
 					<div class="row tab-pane fade" id="certificateTab">
@@ -67,7 +69,7 @@
 						</div>
 						<div class="col-md-1" role="group" aria-label="...">
 							<button type="button" class="btn btn-primary btn-block" id="backCertificate">Back</button>
-							<button type="button" class="btn btn-primary btn-block" id="nextCertificate">Next</button>
+							<button type="button" class="btn btn-primary btn-block next hide" id="nextCertificate">Next</button>
 						</div> <!-- end btn-group div -->
 					</div> <!-- end certificateTab div -->
 					<div class="row tab-pane fade" id="classesTab">
@@ -79,7 +81,7 @@
 						</div>
 						<div class="col-md-1" role="group" aria-label="...">
 							<button type="button" class="btn btn-primary btn-block" id="backClasses">Back</button>
-							<button type="button" class="btn btn-success">Success</button>
+							<button type="button" class="btn btn-success btn-block hide" id="successClasses">Success</button>
 						</div>
 					</div> <!-- end classesTab div -->
 				</div> <!-- end tab-content div -->
@@ -87,25 +89,45 @@
 		</div>
 		<script type="text/javascript">
 			$(function(){
-				$('#nextSchool').click(function(e) {
-					$.ajax({
-						type:'POST',
-						url:'${request.application_url}/post_demo',
-						data: JSON.stringify({
-							'category_id':'school',
-							'selected_id':$('select[name=school]').find(":selected").val()
-						}),
-						contentType: 'application/json; charset=utf-8'
-					})
-					.done(function(msg){
-						var $el = $('#yearSelect');
-						$el.empty(); // Remove old options
-						var data =  jQuery.parseJSON(String(msg));
-						console.log("No errors so far!");
-						$.each(data, function(key, value) {
-							$el.append($("<option></option>").attr("value", value).text(key));
+				$("select").change(function(e) {
+					var thisSelect = $(e.target).closest("select");
+					var thisID = thisSelect.attr('id');
+					var nextSelect = $(e.target).parent().parent().parent().nextAll('div').first().find('select');
+					var nextButton = $(e.target).parent().parent().nextAll('div').first().find('.next');
+					var selectedVal = $(this).find(":selected").val();
+					var $el = nextSelect; //$(this).next();// $('#yearSelect');
+					$el.empty(); // Remove old options
+					if(selectedVal != "Select") {
+						$.ajax({
+							type:'POST',
+							url:'${request.application_url}/post_demo',
+							data: JSON.stringify({
+								'selected_id': $(this).find(":selected").val()//$('select[name=school]').find(":selected").val()
+							}),
+							contentType: 'application/json; charset=utf-8'
+						})
+						.done(function(msg){
+							if((thisID == "degreeSelect") && (msg.length == 0)){
+								//console.log("Length of return is: "+msg.length);
+								$('#nextDegree').addClass('hide');
+								$('#certificateBar').addClass('hide');
+								$('#classesBar').addClass('hide');
+								$('#successDegree').removeClass('hide');
+							} else {
+								var data =  jQuery.parseJSON(String(msg));
+								console.log("No errors so far!");
+								$el.append($("<option></option>").text("Select"));
+								$.each(data, function(key, value) {
+									$el.append($("<option></option>").attr("value", value).text(key));
+								});
+								nextButton.removeClass('hide');
+							}
 						});
-					});
+					} else {
+						nextButton.addClass('hide');
+					}
+				});
+				$('#nextSchool').click(function(e) {
 					// Deactivate current tab
 					$('#schoolBar').removeClass('active');
 					$('#schoolTab').removeClass('in active');
@@ -114,46 +136,12 @@
 					$('#yearTab').addClass('in active');
 				});
 				$('#nextYear').click(function(e) {
-					$.ajax({
-						type:'POST',
-						url:'${request.application_url}/post_demo',
-						data: JSON.stringify({
-							'selected_id':$('select[name=year]').find(":selected").val()
-						}),
-						contentType: 'application/json; charset=utf-8'
-					})
-					.done(function(msg){
-						var $el = $('#degreeSelect');
-						$el.empty(); // Remove old options
-						var data =  jQuery.parseJSON(String(msg));
-						console.log("No errors so far!");
-						$.each(data, function(key, value) {
-							$el.append($("<option></option>").attr("value", value).text(key));
-						});
-					});
 					$('#yearBar').removeClass('active');
 					$('#yearTab').removeClass('in active');
 					$('#degreeBar').removeClass('hide').addClass('active');
 					$('#degreeTab').addClass('in active');
 				});
 				$('#nextDegree').click(function(e) {
-					$.ajax({
-						type:'POST',
-						url:'${request.application_url}/post_demo',
-						data: JSON.stringify({
-							'selected_id':$('select[name=degree]').find(":selected").val()
-						}),
-						contentType: 'application/json; charset=utf-8'
-					})
-					.done(function(msg){
-						var $el = $('#certificateSelect');
-						$el.empty(); // Remove old options
-						var data =  jQuery.parseJSON(String(msg));
-						console.log("No errors so far!");
-						$.each(data, function(key, value) {
-							$el.append($("<option></option>").attr("value", value).text(key));
-						});
-					});
 					$('#degreeBar').removeClass('active');
 					$('#degreeTab').removeClass('in active');
 					$('#certificateBar').removeClass('hide').addClass('active');

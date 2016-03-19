@@ -12,11 +12,9 @@ import json
 @view_config(route_name='edit_demography', renderer='approvalratingsapp:templates/edit_demography.pt')
 def edit_demography(request):
 	institution_type = DemographyTypeRecordService.by_demography_type('institution')
-	degree_type = DemographyTypeRecordService.by_demography_type('degree')
 	class_type = DemographyTypeRecordService.by_demography_type('class')
 	optsub_type = DemographyTypeRecordService.by_demography_type('optional subject')
 	schools = DemographyRecordService.by_demography_type(institution_type.id)
-	degrees = DemographyRecordService.by_demography_type(degree_type.id)
 	classes = DemographyRecordService.by_demography_type(class_type.id)
 	for class1 in classes:
 		print class1.id
@@ -44,6 +42,8 @@ def post_demo(request):
 			child_demo = DemographyRecordService.by_id(mapping.child_demography_id)
 			pair = '"' + child_demo.demography_name + '"' + ':' + str(child_demo.id) + ','
 			pairs += pair
+		if len(mappings) == 0:
+			return ''
 		pairs = pairs[:-1] +  '}'
 		print pairs
 		return pairs
